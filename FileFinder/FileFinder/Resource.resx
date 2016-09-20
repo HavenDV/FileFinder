@@ -117,18 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DateFormatException" xml:space="preserve">
-    <value>Date string have is not supported format</value>
-  </data>
   <data name="ErrorMessage" xml:space="preserve">
     <value>Error: {0}</value>
   </data>
-  <data name="ExtensionException" xml:space="preserve">
-    <value>File extension is not ".XLS" or ".XLSX"</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="HelpText" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\HelpTextFile.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+    <value>Resources\HelpText.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  </data>
+  <data name="MessageText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MessageText.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
   </data>
   <data name="StackTraceMessage" xml:space="preserve">
     <value>StackTrace:</value>

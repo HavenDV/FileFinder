@@ -61,15 +61,6 @@ namespace FileFinder {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Date string have is not supported format.
-        /// </summary>
-        internal static string DateFormatException {
-            get {
-                return ResourceManager.GetString("DateFormatException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Error: {0}.
         /// </summary>
         internal static string ErrorMessage {
@@ -79,23 +70,27 @@ namespace FileFinder {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на File extension is not &quot;.XLS&quot; or &quot;.XLSX&quot;.
-        /// </summary>
-        internal static string ExtensionException {
-            get {
-                return ResourceManager.GetString("ExtensionException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на File Finder v1.0  released: Sentember 20, 2016
-        ///Copyright (C) 2016 Kontantin Stukov
+        ///   Ищет локализованную строку, похожую на File Finder v1.0  released: September 20, 2016
+        ///Copyright (C) 2016 Konstantin Stukov
         ///Usage:
-        ///    filefinder.exe &lt;pathtoxlsorxlsxortxtfile&gt; [pathtostartdir].
+        ///    filefinder.exe &lt;pathtoxlsorxlsxortxtfile&gt; [pathtosourcedir] [pathtodestdir].
         /// </summary>
         internal static string HelpText {
             get {
                 return ResourceManager.GetString("HelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Result: {0}
+        ///Prefix: {1}
+        ///Source Dir: {2}
+        ///Moved to: {3}
+        ///As: {4}.
+        /// </summary>
+        internal static string MessageText {
+            get {
+                return ResourceManager.GetString("MessageText", resourceCulture);
             }
         }
         

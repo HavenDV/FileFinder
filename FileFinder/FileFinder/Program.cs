@@ -1,43 +1,57 @@
 ﻿using Excel;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: NeutralResourcesLanguage("en-US")]
 namespace FileFinder
 {
     class Program
     {
-        //static DataSet LoadTextFile(string path)
-        //{
-        //    return new DataSet();
-        //}
-
-        static DataSet LoadExcelFile(string path)
+        static DataTable LoadTextFile(string path)
         {
-            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
+            var table = new DataTable();
+            table.Locale = CultureInfo.InvariantCulture;
+            var text = File.ReadAllText(path);
+            var lines = text.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
+            table.Columns.Add("Prefix", typeof(string));
+            table.Columns.Add("Date", typeof(string));
+            lines.ToList().ForEach(line =>
+            {
+                var values = line.Split(' ');
+                Debug.Assert(values != null);
+                Debug.Assert(values.Length > 0);
+                table.Rows.Add(values[0], values.Length > 1 ? values[1] : "");
+            });
+
+            return table;
+        }
+
+        static DataTable LoadExcelFile(string path)
+        {
+            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 var extension = Path.GetExtension(path);
                 var isXls = string.Compare(extension, ".xls", StringComparison.OrdinalIgnoreCase) == 0;
                 var isXlsx = string.Compare(extension, ".xlsx", StringComparison.OrdinalIgnoreCase) == 0;
                 if (!isXls && !isXlsx)
                 {
-                    throw new ArgumentException(Resource.ExtensionException, path);
+                    return LoadTextFile(path);
                 }
-
+                
                 var reader = isXls ?
                     ExcelReaderFactory.CreateBinaryReader(stream) :
                     ExcelReaderFactory.CreateOpenXmlReader(stream);
                 reader.IsFirstRowAsColumnNames = true;
-                return reader.AsDataSet();
+                var data = reader.AsDataSet();
+                Debug.Assert(data != null);
+                Debug.Assert(data.Tables != null);
+                Debug.Assert(data.Tables.Count > 0);
+                return data.Tables[0];
             }
         }
 
@@ -60,13 +74,13 @@ namespace FileFinder
                     return date;
                 }
             }
-            //throw new FormatException(Resource.DateFormatException);
+
             return null;
         }
 
         static string FindFile(string startDir, string prefix)
         {
-            Debug.WriteLine("FindFile. Current dir: {0}", startDir);
+            Debug.WriteLine("FindFile. Current dir: {0}", (object)startDir);
             foreach (var file in Directory.GetFiles(startDir)
                 .Where(i => Path.GetFileName(i).StartsWith(prefix,StringComparison.OrdinalIgnoreCase)))
             {
@@ -100,6 +114,7 @@ namespace FileFinder
 
         static void Main(string[] args)
         {
+            Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
             try
             {
                 if (args.Length < 1 || HelpRequired(args[0]))
@@ -111,11 +126,7 @@ namespace FileFinder
                 var filePath = args[0];
                 var sourceDir = args.Length > 1 ? args[1] : ".";
                 var destDir = args.Length > 2 ? args[2] : ".";
-                var data = LoadExcelFile(filePath);
-                Debug.Assert(data != null);
-                Debug.Assert(data.Tables != null);
-                Debug.Assert(data.Tables.Count > 0);
-                var table = data.Tables[0];
+                var table = LoadExcelFile(filePath);
                 for (var i = 0; i < table.Rows.Count; ++i)
                 {
                     var row = table.Rows[i];
@@ -128,18 +139,15 @@ namespace FileFinder
                     {
                         var destFile = Path.Combine(destDir, Path.GetFileName(findedFile));
                         File.Move(findedFile, destFile);
-                        Console.WriteLine("Result: {0}", findedFile);
-                        Console.WriteLine("Prefix: {0}", prefix);
-                        Console.WriteLine("Source Dir: {0}", sourceDir);
-                        Console.WriteLine("Moved to: {0} as {1}", destDir, destFile);
+                        Console.WriteLine(Resource.MessageText, findedFile, prefix, sourceDir, destDir, destFile);
                     }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(Resource.ErrorMessage, e.Message);
-                //Console.WriteLine(Resource.StackTraceMessage);
-                //Console.WriteLine(e.StackTrace);
+                Debug.WriteLine(Resource.StackTraceMessage);
+                Debug.WriteLine(e.StackTrace);
             }
             //Console.ReadKey();
         }

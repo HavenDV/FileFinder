@@ -111,7 +111,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HelpTextFile.txt" />
+    <None Include="Resources\HelpText.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MessageText.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
