@@ -1,5 +1,5 @@
 Result: {0}
 Prefix: {1}
-Source Dir: {2}
+Source Directory: {2}
 Moved to: {3}
 As: {4}
